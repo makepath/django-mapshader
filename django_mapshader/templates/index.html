@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List of Services</title>
+</head>
+<body>
+    {% for service in service_list %}
+        <li><a href="{{service.service_page_url}}">{{service.name}}</a></li>
+    {% endfor %}
+</body>
+</html>
