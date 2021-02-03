@@ -6,8 +6,7 @@ from django.shortcuts import render
 
 from bokeh.embed import components
 from bokeh.resources import INLINE
-from mapshader.core import render_map
-from mapshader.core import render_geojson
+from mapshader.core import render_map, render_geojson, render_legend
 from mapshader.sources import MapSource
 
 from django_mapshader.utils import build_previewer
@@ -49,7 +48,7 @@ def get_image(request, source: MapSource,
     return StreamingHttpResponse(img.to_bytesio(), content_type='image/png')
 
 
-def get_wms(request, source: MapSource,):
+def get_wms(request, source: MapSource):
 
     if not source.is_loaded:
         source.load()
@@ -70,4 +69,9 @@ def get_geojson(request, source: MapSource):
         source.load()
 
     response = render_geojson(source)
+    return JsonResponse(response, safe=False)
+
+
+def get_legend(request, source: MapSource):
+    response = render_legend(source)
     return JsonResponse(response, safe=False)

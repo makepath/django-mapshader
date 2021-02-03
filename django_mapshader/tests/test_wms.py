@@ -1,3 +1,5 @@
+import json
+
 from django.conf import settings
 from django.test import TestCase
 
@@ -19,3 +21,11 @@ class WmsViewTestCase(TestCase):
         for wms in self.wms_services:
             response = self.client.get(f'/{wms.key}')
             self.assertEqual(response.status_code, 200)
+
+    def test_legend(self):
+        for wms in self.wms_services:
+            response = self.client.get(wms.legend_url)
+            self.assertEqual(response.status_code, 200)
+
+            data = json.loads(response.json())
+            self.assertIsInstance(data, list)

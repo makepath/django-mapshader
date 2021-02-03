@@ -17,6 +17,7 @@ view_func_creators = {
     'image': views.get_image,
     'wms': views.get_wms,
     'geojson': views.get_geojson,
+    'legend': views.get_legend,
 }
 
 if settings.SERVICES:
@@ -39,6 +40,17 @@ for service in default_services:
             name=f'mapshader-{service.name}'
         )
     )
+
+    # add legend endpoint
+    urlpatterns.append(
+        path(
+            service.legend_url[1:],
+            partial(view_func_creators['legend'], source=service.source),
+            name=f'mapshader-{service.legend_name}'
+        )
+    )
+
+    # add service page endpoint
     urlpatterns.append(
         path(
             service.service_page_url[1:],

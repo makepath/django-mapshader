@@ -1,3 +1,5 @@
+import json
+
 from django.conf import settings
 from django.test import TestCase
 
@@ -21,3 +23,11 @@ class GeoJsonViewTestCase(TestCase):
         for geojson in self.geojson_services:
             response = self.client.get(geojson.default_url)
             self.assertTrue(len(response.json()) > 1)
+
+    def test_legend(self):
+        for geojson in self.geojson_services:
+            response = self.client.get(geojson.legend_url)
+            self.assertEqual(response.status_code, 200)
+
+            data = json.loads(response.json())
+            self.assertIsInstance(data, list)

@@ -1,3 +1,5 @@
+import json
+
 from django.conf import settings
 from django.test import TestCase
 
@@ -16,3 +18,11 @@ class ImageViewTestCase(TestCase):
         for image in self.image_services:
             response = self.client.get(f'/{image.key}')
             self.assertEqual(response.status_code, 200)
+
+    def test_legend(self):
+        for image in self.image_services:
+            response = self.client.get(image.legend_url)
+            self.assertEqual(response.status_code, 200)
+
+            data = json.loads(response.json())
+            self.assertIsInstance(data, list)
