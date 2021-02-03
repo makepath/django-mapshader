@@ -10,6 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
+import sys
+
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -125,3 +127,11 @@ STATIC_URL = '/static/'
 # Mapshader Configuration
 
 MAPSHADER_CONFIG = None
+
+
+TESTING = sys.argv[1:2] == ['test']
+SERVICES = None
+
+if TESTING:
+    from mapshader.sources import get_services
+    SERVICES = list(get_services())

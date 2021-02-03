@@ -1,4 +1,5 @@
 import sys
+import json
 
 from django.http import StreamingHttpResponse, JsonResponse
 from django.shortcuts import render
@@ -53,9 +54,9 @@ def get_wms(request, source: MapSource,):
     if not source.is_loaded:
         source.load()
 
-    height = request.args.get('height')
-    width = request.args.get('width')
-    bbox = request.args.get('bbox')
+    height = request.GET.get('height')
+    width = request.GET.get('width')
+    bbox = request.GET.get('bbox', '')
     xmin, ymin, xmax, ymax = bbox.split(',')
     img = render_map(source, xmin=float(xmin), ymin=float(ymin),
                      xmax=float(xmax), ymax=float(ymax),
@@ -68,12 +69,5 @@ def get_geojson(request, source: MapSource):
     if not source.is_loaded:
         source.load()
 
-    q = request.args.get('q')
-    limit = request.args.get('limit')
-    offset = request.args.get('offset')
-    simplify = request.args.get('simplify')
-    bbox = request.args.get('bbox')
-
-
     response = render_geojson(source)
-    return JsonResponse(response)
+    return JsonResponse(response, safe=False)

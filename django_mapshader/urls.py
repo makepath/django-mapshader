@@ -1,8 +1,8 @@
 from functools import partial
 
+from django.conf import settings
 from django.urls import path
 
-from mapshader import hello
 from mapshader.sources import get_services
 
 from django_mapshader import views
@@ -19,8 +19,13 @@ view_func_creators = {
     'geojson': views.get_geojson,
 }
 
+if settings.SERVICES:
+    default_services = settings.SERVICES
+else:
+    default_services =  get_services(config_path=get_config_file(), contains=None)
+
 services = []
-for service in get_services(config_path=get_config_file(), contains=None):
+for service in default_services:
 
     services.append(service)
 
@@ -50,4 +55,3 @@ urlpatterns.append(
         name='mapshader-index'
     )
 )
-hello(services)
