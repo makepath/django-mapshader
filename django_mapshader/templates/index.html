@@ -7,7 +7,13 @@
 </head>
 <body>
     {% for service in service_list %}
-        <li><a href="{{service.service_page_url}}">{{service.name}}</a></li>
+        {% with service_url_name=service.name|slugify|add:'-page' %}
+            <li>
+                <a href="{% url 'django_mapshader:'|add:service_url_name %}">
+                    {{service.name}}
+                </a>
+            </li>
+        {% endwith %}
     {% endfor %}
 </body>
 </html>

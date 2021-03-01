@@ -2,6 +2,7 @@ from functools import partial
 
 from django.conf import settings
 from django.urls import path
+from django.utils.text import slugify
 
 from mapshader.sources import get_services
 
@@ -9,6 +10,7 @@ from django_mapshader import views
 from django_mapshader.utils import get_config_file
 
 
+app_name = 'django_mapshader'
 urlpatterns = []
 
 
@@ -37,7 +39,7 @@ for service in default_services:
         path(
             service.service_url[1:],
             partial(view_func, source=service.source),
-            name=f'mapshader-{service.name}'
+            name=slugify(service.name)
         )
     )
 
@@ -46,7 +48,7 @@ for service in default_services:
         path(
             service.legend_url[1:],
             partial(view_func_creators['legend'], source=service.source),
-            name=f'mapshader-{service.legend_name}'
+            name=slugify(service.legend_name)
         )
     )
 
@@ -55,7 +57,7 @@ for service in default_services:
         path(
             service.service_page_url[1:],
             partial(views.service_page, service=service),
-            name=f'mapshader-{service.service_page_name}'
+            name=slugify(service.name)+'-page'
         )
     )
 

@@ -3,7 +3,7 @@ import json
 from django.conf import settings
 from django.test import TestCase
 
-from django_mapshader.tests.utils import serparete_query_params
+from .utils import serparete_query_params
 
 
 class WmsViewTestCase(TestCase):
