@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List of Services</title>
+</head>
+<body>
+    {% for service in service_list %}
+        {% with service_url_name=service.name|slugify|add:'-page' %}
+            <li>
+                <a href="{% url 'django_mapshader:'|add:service_url_name %}">
+                    {{service.name}}
+                </a>
+            </li>
+        {% endwith %}
+    {% endfor %}
+</body>
+</html>
